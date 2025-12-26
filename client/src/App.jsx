@@ -1,24 +1,57 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import HomeScreen from './screens/HomeScreen'
 import LobbyScreen from './screens/LobbyScreen'
 import GameScreen from './screens/GameScreen'
 import GameOverScreen from './screens/GameOverScreen'
+import socket from './utils/socket'
 import './styles/App.css'
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState('home')
   const [playerData, setPlayerData] = useState(null)
   const [gameResults, setGameResults] = useState(null)
+  const [roomData, setRoomData] = useState(null)
+
+  useEffect(() => {
+    // Socket event listeners
+    socket.on('game-joined', (data) => {
+      console.log('Game joined:', data);
+      setRoomData(data);
+      setCurrentScreen('lobby');
+      
+      // Oyun başlamışsa direkt game ekranına git
+      if (data.isStarted) {
+        setCurrentScreen('game');
+      }
+    });
+
+    socket.on('game-started', () => {
+      console.log('Game started!');
+      setCurrentScreen('game');
+    });
+
+    socket.on('error', (error) => {
+      console.error('Server error:', error);
+      alert(error.message || 'Bir hata oluştu!');
+    });
+
+    return () => {
+      socket.off('game-joined');
+      socket.off('game-started');
+      socket.off('error');
+    };
+  }, []);
 
   const handleStartGame = (nickname) => {
-    setPlayerData({ nickname })
-    setCurrentScreen('lobby')
+    setPlayerData({ nickname });
     
-    // TODO: Socket bağlantısı ve oda bulma
-    // Simüle edilmiş lobby geçişi
-    setTimeout(() => {
-      setCurrentScreen('game')
-    }, 3000)
+    // Socket'e bağlan
+    if (!socket.connected) {
+      socket.connect();
+    }
+    
+    // Oyuna katıl
+    socket.emit('join-game', { nickname });
   }
 
   const handleGameOver = (results) => {
@@ -35,6 +68,13 @@ function App() {
     setCurrentScreen('home')
     setPlayerData(null)
     setGameResults(null)
+    setRoomData(null)
+    
+    // Socket'ten ayrıl
+    if (socket.connected) {
+      socket.emit('leave-game');
+      socket.disconnect();
+    }
   }
 
   return (
@@ -44,7 +84,7 @@ function App() {
       )}
       
       {currentScreen === 'lobby' && (
-        <LobbyScreen playerData={playerData} />
+        <LobbyScreen playerData={playerData} roomData={roomData} />
       )}
       
       {currentScreen === 'game' && (
