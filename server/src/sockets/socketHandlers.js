@@ -16,8 +16,11 @@ export function setupSocketHandlers(socket, io, roomManager) {
     // Uygun oda bul veya oluştur
     currentRoom = roomManager.findOrCreateRoom();
     
-    // Oyuncuyu odaya ekle
-    const added = currentRoom.addPlayer(socket.id, { nickname });
+    // Oyuncuyu odaya ekle (socket referansı ile)
+    const added = currentRoom.addPlayer(socket.id, { 
+      nickname,
+      socket  // Socket referansını da ekle
+    });
     
     if (!added) {
       socket.emit('error', { message: 'Oda dolu!' });
@@ -31,7 +34,8 @@ export function setupSocketHandlers(socket, io, roomManager) {
     socket.emit('game-joined', {
       roomId: currentRoom.id,
       players: currentRoom.getPlayers(),
-      isStarted: currentRoom.isStarted()
+      isStarted: currentRoom.isStarted(),
+      isCreator: currentRoom.creatorId === socket.id // Oda kurucusu mu?
     });
 
     // Odadaki diğer oyunculara bildir
@@ -41,6 +45,17 @@ export function setupSocketHandlers(socket, io, roomManager) {
     });
 
     console.log(`${nickname} joined room ${currentRoom.id}`);
+  });
+
+  // Manuel oyun başlatma (sadece oda kurucusu)
+  socket.on('manual-start', () => {
+    if (!currentRoom) return;
+
+    const result = currentRoom.manualStart(socket.id);
+    
+    if (!result.success) {
+      socket.emit('error', { message: result.message });
+    }
   });
 
   // Oyuncu hareketi

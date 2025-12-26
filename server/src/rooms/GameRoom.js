@@ -12,6 +12,8 @@ export class GameRoom {
     this.gameDuration = 300000; // 5 dakika (ms)
     this.tickInterval = null;
     this.tickRate = 60; // FPS
+    this.autoStartTimeout = null; // Auto-start timer
+    this.creatorId = null; // İlk oyuncu (oda kurucusu)
   }
 
   generateRoomId() {
@@ -26,18 +28,24 @@ export class GameRoom {
     this.players.set(socketId, {
       socketId,
       nickname: playerData.nickname,
+      socket: playerData.socket,
       joinedAt: Date.now()
     });
+
+    // İlk oyuncu oda kurucusu olur
+    if (!this.creatorId) {
+      this.creatorId = socketId;
+    }
 
     console.log(`Player ${playerData.nickname} joined room ${this.id}`);
 
     // Oda doluysa veya belli bir süre geçtiyse oyunu başlat
-    if (this.players.size >= 2 && !this.started) {
-      setTimeout(() => {
+    if (this.players.size >= 2 && !this.started && !this.autoStartTimeout) {
+      this.autoStartTimeout = setTimeout(() => {
         if (!this.started) {
           this.start();
         }
-      }, 3000); // 3 saniye bekleme
+      }, 30000); // 30 saniye bekleme (manuel başlatma için süre)
     }
 
     return true;
@@ -61,9 +69,22 @@ export class GameRoom {
 
     console.log(`Starting game in room ${this.id} with ${this.players.size} players`);
     
+    // Auto-start timer'ı iptal et
+    if (this.autoStartTimeout) {
+      clearTimeout(this.autoStartTimeout);
+      this.autoStartTimeout = null;
+    }
+    
     this.started = true;
     this.startTime = Date.now();
     this.gameState = new GameState(this.players);
+
+    // Tüm oyunculara oyun başladı mesajı gönder
+    this.broadcast('game-started', {
+      roomId: this.id,
+      players: this.getPlayers(),
+      startTime: this.startTime
+    });
 
     // Game tick loop
     this.tickInterval = setInterval(() => {
@@ -74,6 +95,33 @@ export class GameRoom {
     setTimeout(() => {
       this.end();
     }, this.gameDuration);
+  }
+
+  manualStart(requesterId) {
+    // Sadece oda kurucusu manuel başlatabilir
+    if (requesterId !== this.creatorId) {
+      return { success: false, message: 'Sadece oda kurucusu oyunu başlatabilir!' };
+    }
+
+    if (this.started) {
+      return { success: false, message: 'Oyun zaten başladı!' };
+    }
+
+    if (this.players.size < 2) {
+      return { success: false, message: 'En az 2 oyuncu gerekli!' };
+    }
+
+    this.start();
+    return { success: true };
+  }
+
+  broadcast(event, data) {
+    // Socket.io broadcast helper
+    this.players.forEach(player => {
+      if (player.socket) {
+        player.socket.emit(event, data);
+      }
+    });
   }
 
   tick() {

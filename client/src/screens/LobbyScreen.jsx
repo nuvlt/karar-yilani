@@ -3,9 +3,12 @@ import socket from '../utils/socket'
 
 function LobbyScreen({ playerData, roomData }) {
   const [players, setPlayers] = useState(roomData?.players || [])
-  const [countdown, setCountdown] = useState(3)
+  const [countdown, setCountdown] = useState(30) // 30 saniye
+  const [isCreator, setIsCreator] = useState(roomData?.isCreator || false)
 
   useEffect(() => {
+    setIsCreator(roomData?.isCreator || false);
+    
     // Socket event listeners
     socket.on('player-joined', (data) => {
       console.log('Player joined:', data);
@@ -33,7 +36,11 @@ function LobbyScreen({ playerData, roomData }) {
       socket.off('player-left');
       clearInterval(countdownInterval)
     }
-  }, [])
+  }, [roomData])
+
+  const handleManualStart = () => {
+    socket.emit('manual-start');
+  }
 
   return (
     <div className="screen lobby-screen">
@@ -45,7 +52,7 @@ function LobbyScreen({ playerData, roomData }) {
           <ul className="players-list">
             {players.map((player, index) => (
               <li key={player.socketId || index} className="player-item">
-                • {player.nickname}
+                • {player.nickname} {player.socketId === socket.id ? '(Sen)' : ''}
               </li>
             ))}
           </ul>
@@ -53,9 +60,20 @@ function LobbyScreen({ playerData, roomData }) {
         
         <div className="lobby-status">
           {countdown > 0 ? (
-            <p className="starting-message">
-              Oyun {countdown} saniye içinde başlıyor!
-            </p>
+            <>
+              <p className="starting-message">
+                Oyun {countdown} saniye içinde başlıyor!
+              </p>
+              {isCreator && (
+                <button 
+                  onClick={handleManualStart} 
+                  className="button button--primary button--large"
+                  style={{ marginTop: '16px' }}
+                >
+                  HEMEN BAŞLAT
+                </button>
+              )}
+            </>
           ) : (
             <p className="starting-message">Başlıyor...</p>
           )}
