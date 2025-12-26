@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karar Yılanı - Keep Alive</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f0f1e;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            background: #1a1a2e;
+        }
+        .online { color: #00ff88; }
+        .offline { color: #ff4444; }
+    </style>
+</head>
+<body>
+    <h1>🐍 Karar Yılanı - Server Status</h1>
+    <div class="status">
+        <p id="status">Checking...</p>
+        <p id="lastPing">Last ping: -</p>
+    </div>
+
+    <script>
+        const SERVER_URL = 'https://karar-yilani-server.onrender.com';
+        
+        async function pingServer() {
+            const start = Date.now();
+            try {
+                const response = await fetch(`${SERVER_URL}/health`);
+                const data = await response.json();
+                const duration = Date.now() - start;
+                
+                document.getElementById('status').innerHTML = 
+                    `<span class="online">✅ Server Online</span><br>Response time: ${duration}ms`;
+                document.getElementById('lastPing').textContent = 
+                    `Last ping: ${new Date().toLocaleTimeString('tr-TR')}`;
+            } catch (error) {
+                document.getElementById('status').innerHTML = 
+                    `<span class="offline">❌ Server Offline</span>`;
+            }
+        }
+        
+        // İlk ping
+        pingServer();
+        
+        // Her 5 dakikada bir ping (Render'ın sleep olmaması için)
+        setInterval(pingServer, 5 * 60 * 1000);
+        
+        // Her 30 saniyede bir status güncelle
+        setInterval(pingServer, 30 * 1000);
+    </script>
+</body>
+</html>

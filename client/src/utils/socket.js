@@ -7,12 +7,14 @@ console.log('Connecting to:', SOCKET_URL);
 export const socket = io(SOCKET_URL, {
   autoConnect: false,
   reconnection: true,
-  reconnectionDelay: 1000,
-  reconnectionAttempts: 10,
-  timeout: 20000,
-  transports: ['polling', 'websocket'], // Önce polling dene!
-  upgrade: true, // Polling'den websocket'e upgrade etmeyi dene
-  rememberUpgrade: true
+  reconnectionDelay: 2000,
+  reconnectionDelayMax: 10000,
+  reconnectionAttempts: 15,  // Daha fazla retry
+  timeout: 60000,             // 60 saniye (cold start için!)
+  transports: ['polling', 'websocket'],
+  upgrade: true,
+  rememberUpgrade: true,
+  forceNew: false
 });
 
 // Connection event listeners

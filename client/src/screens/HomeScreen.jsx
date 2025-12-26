@@ -5,6 +5,7 @@ import Input from '../components/ui/Input'
 function HomeScreen({ onStartGame }) {
   const [nickname, setNickname] = useState('')
   const [error, setError] = useState('')
+  const [isConnecting, setIsConnecting] = useState(false)
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -26,6 +27,7 @@ function HomeScreen({ onStartGame }) {
     }
     
     setError('')
+    setIsConnecting(true)
     onStartGame(nickname)
   }
 
@@ -46,8 +48,14 @@ function HomeScreen({ onStartGame }) {
           
           {error && <p className="error-message">{error}</p>}
           
-          <Button type="submit" variant="primary" size="large">
-            OYNA
+          {isConnecting && (
+            <p className="info-message" style={{ color: '#00ff88', marginTop: '8px' }}>
+              ⏳ Sunucuya bağlanıyor... (30-60 saniye sürebilir)
+            </p>
+          )}
+          
+          <Button type="submit" variant="primary" size="large" disabled={isConnecting}>
+            {isConnecting ? 'BAĞLANIYOR...' : 'OYNA'}
           </Button>
         </form>
         

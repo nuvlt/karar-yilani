@@ -13,19 +13,26 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
     origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
-    methods: ['GET', 'POST'],
-    credentials: true
+    methods: ['GET', 'POST', 'OPTIONS'],
+    credentials: true,
+    allowedHeaders: ['Content-Type']
   },
   transports: ['polling', 'websocket'],
   allowUpgrades: true,
   pingTimeout: 60000,
   pingInterval: 25000,
   maxHttpBufferSize: 1e6,
-  connectTimeout: 45000
+  connectTimeout: 45000,
+  allowEIO3: true
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  credentials: true,
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 // Room Manager (singleton)
@@ -43,6 +50,19 @@ app.get('/health', (req, res) => {
 // API endpoints
 app.get('/api/rooms', (req, res) => {
   res.json(roomManager.getRoomStats());
+});
+
+// CORS Debug endpoint
+app.get('/debug/cors', (req, res) => {
+  res.json({
+    configuredOrigin: process.env.CORS_ORIGIN,
+    requestOrigin: req.headers.origin,
+    allEnvVars: {
+      NODE_ENV: process.env.NODE_ENV,
+      PORT: process.env.PORT,
+      CORS_ORIGIN: process.env.CORS_ORIGIN
+    }
+  });
 });
 
 // Socket.io connection

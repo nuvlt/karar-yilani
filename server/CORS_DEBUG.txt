@@ -1,0 +1,10 @@
+// CORS Debug endpoint (index.js'e ekle)
+
+app.get('/debug/cors', (req, res) => {
+  res.json({
+    configuredOrigin: process.env.CORS_ORIGIN,
+    requestOrigin: req.headers.origin,
+    allowedMethods: ['GET', 'POST', 'OPTIONS'],
+    corsEnabled: true
+  });
+});
