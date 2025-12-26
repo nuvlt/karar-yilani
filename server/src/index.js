@@ -13,8 +13,15 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
     origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
-    methods: ['GET', 'POST']
-  }
+    methods: ['GET', 'POST'],
+    credentials: true
+  },
+  transports: ['polling', 'websocket'],
+  allowUpgrades: true,
+  pingTimeout: 60000,
+  pingInterval: 25000,
+  maxHttpBufferSize: 1e6,
+  connectTimeout: 45000
 });
 
 // Middleware
@@ -41,6 +48,12 @@ app.get('/api/rooms', (req, res) => {
 // Socket.io connection
 io.on('connection', (socket) => {
   console.log('Player connected:', socket.id);
+  console.log('Transport:', socket.conn.transport.name);
+  
+  socket.conn.on('upgrade', () => {
+    console.log('Transport upgraded to:', socket.conn.transport.name);
+  });
+  
   setupSocketHandlers(socket, io, roomManager);
 });
 
