@@ -1,0 +1,400 @@
+/* Home Screen */
+.home-screen {
+  background: linear-gradient(135deg, var(--bg-dark), var(--bg-medium));
+}
+
+.home-container {
+  text-align: center;
+  max-width: 400px;
+  padding: 40px;
+}
+
+.game-title {
+  font-size: 48px;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.game-subtitle {
+  font-size: 16px;
+  color: var(--text-dim);
+  margin-bottom: 40px;
+}
+
+.nickname-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.home-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+/* Lobby Screen */
+.lobby-screen {
+  background: var(--bg-dark);
+}
+
+.lobby-container {
+  background: var(--bg-medium);
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 400px;
+  text-align: center;
+}
+
+.players-section {
+  margin: 24px 0;
+}
+
+.players-list {
+  list-style: none;
+  max-height: 200px;
+  overflow-y: auto;
+  text-align: left;
+  padding: 16px;
+  background: var(--bg-light);
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.player-item {
+  padding: 8px 0;
+  color: var(--text-dim);
+}
+
+.lobby-status {
+  margin-top: 32px;
+}
+
+.starting-message {
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: var(--primary);
+}
+
+/* Game Screen */
+.game-screen {
+  position: relative;
+  background: var(--bg-dark);
+}
+
+.scoreboard {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(26, 26, 46, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  border-bottom: 2px solid var(--bg-light);
+}
+
+.scoreboard-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.scoreboard-icon {
+  font-size: 20px;
+}
+
+.scoreboard-label {
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.scoreboard-value {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.game-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* Decision Popup */
+.decision-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.decision-popup {
+  background: var(--bg-medium);
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 500px;
+  width: 90%;
+  border: 3px solid var(--primary);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.decision-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.decision-header h3 {
+  font-size: 24px;
+  color: var(--primary);
+}
+
+.decision-timer {
+  font-size: 20px;
+  color: var(--secondary);
+  font-weight: bold;
+}
+
+.decision-scenario {
+  font-size: 18px;
+  margin-bottom: 24px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.decision-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.decision-option {
+  background: var(--bg-light);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.decision-option:hover {
+  border-color: var(--primary);
+  transform: translateX(4px);
+  background: rgba(0, 255, 136, 0.1);
+}
+
+.option-label {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.option-effects {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.effect {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: var(--bg-dark);
+}
+
+.effect.positive {
+  color: var(--success);
+}
+
+.effect.negative {
+  color: var(--danger);
+}
+
+/* Game Over Screen */
+.game-over-screen {
+  background: linear-gradient(135deg, var(--bg-dark), var(--bg-medium));
+}
+
+.game-over-container {
+  text-align: center;
+  max-width: 600px;
+  padding: 40px;
+}
+
+.game-over-title {
+  font-size: 36px;
+  margin-bottom: 32px;
+  color: var(--primary);
+}
+
+.player-stats {
+  background: var(--bg-medium);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.main-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.stat-value {
+  font-size: 48px;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.rank-stat {
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.additional-stats {
+  display: flex;
+  justify-content: space-around;
+  padding-top: 16px;
+  border-top: 1px solid var(--bg-light);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.stat-icon {
+  font-size: 24px;
+}
+
+.stat-text {
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.leaderboard {
+  background: var(--bg-medium);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.leaderboard h3 {
+  margin-bottom: 16px;
+  color: var(--secondary);
+}
+
+.leaderboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.leaderboard-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: var(--bg-light);
+  border-radius: 8px;
+}
+
+.leaderboard-item.highlight {
+  background: rgba(0, 255, 136, 0.2);
+  border: 2px solid var(--primary);
+}
+
+.leaderboard-item .rank {
+  width: 40px;
+  font-weight: bold;
+}
+
+.leaderboard-item .name {
+  flex: 1;
+  text-align: left;
+}
+
+.leaderboard-item .score {
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.game-over-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .game-title {
+    font-size: 36px;
+  }
+  
+  .decision-popup {
+    padding: 24px;
+  }
+  
+  .decision-scenario {
+    font-size: 16px;
+  }
+  
+  .scoreboard {
+    padding: 12px;
+    font-size: 14px;
+  }
+  
+  .game-over-actions {
+    flex-direction: column;
+  }
+  
+  .button--large {
+    width: 100%;
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "ui_texts": {
+    "home": {
+      "title": "🐍 KARAR YILANI",
+      "subtitle": "Hayat kararların yılanını büyütsün!",
+      "nickname_placeholder": "Nickname'ini gir...",
+      "play_button": "OYNA",
+      "how_to_play": "Nasıl Oynanır?",
+      "leaderboard": "🏆 Sıralama",
+      "error_nickname_short": "Nickname en az 3 karakter olmalı",
+      "error_nickname_long": "Nickname en fazla 15 karakter olabilir",
+      "error_nickname_invalid": "Sadece harf kullanabilirsin"
+    },
+    "lobby": {
+      "title": "Oda: #{roomId}",
+      "players_count": "Oyuncular ({current}/{max})",
+      "waiting": "Oyuncular bekleniyor...",
+      "starting_in": "Oyun {seconds} saniye içinde başlıyor!",
+      "leave": "Ayrıl"
+    },
+    "game": {
+      "timer_label": "Süre",
+      "score_label": "Skor",
+      "length_label": "Uzunluk",
+      "warning_30s": "⚠️ 30 saniye kaldı!",
+      "warning_10s": "⚠️ 10 saniye kaldı!",
+      "paused": "DURAKLADI",
+      "connection_lost": "❌ Bağlantı koptu...",
+      "reconnecting": "🔄 Yeniden bağlanıyor..."
+    },
+    "decision": {
+      "title": "Karar Ver!",
+      "timeout_label": "Süre: {seconds}s",
+      "timeout_warning": "⏰ Hızlı karar ver!",
+      "auto_selected": "Zaman doldu! Rastgele seçildi."
+    },
+    "game_over": {
+      "title": "🎉 OYUN BİTTİ!",
+      "your_score": "Skorun",
+      "your_rank": "Sıralaman: {rank} / {total}",
+      "max_length": "Max Uzunluk",
+      "decisions_made": "Karar Sayısı",
+      "survival_time": "Hayatta Kalma",
+      "play_again": "TEKRAR OYNA",
+      "main_menu": "ANA MENÜ",
+      "share": "PAYLAŞ"
+    },
+    "leaderboard": {
+      "title": "🏆 LIDER TABLOSU",
+      "daily": "Günlük",
+      "weekly": "Haftalık",
+      "all_time": "Tüm Zamanlar",
+      "rank": "Sıra",
+      "player": "Oyuncu",
+      "score": "Skor",
+      "no_data": "Henüz veri yok"
+    },
+    "tutorial": {
+      "title": "Nasıl Oynanır?",
+      "step1": "🖱️ Mouse/dokunarak yönlen",
+      "step2": "❓ Karar noktalarına gir",
+      "step3": "⚡ Kararlar yılanını etkiler",
+      "step4": "🎯 5 dakika en yüksek skor!",
+      "close": "Anladım!"
+    }
+  },
+  "feedback_messages": {
+    "positive": [
+      "Risk aldın, yılan hızlandı! ⚡",
+      "Güzel seçim! Uzadın! 🐍",
+      "Akıllıca! +{score} puan! 💯",
+      "Harika karar! Büyüdün! 📈",
+      "Cesur seçim! Ödüllendirildin! 🎁",
+      "Mükemmel! Tempo kazandın! 🚀",
+      "İyi düşündün! Puan kazandın! ⭐",
+      "Dengeli seçim! Büyüdün! 🌱",
+      "Stratejik! Hızlandın! ⚡",
+      "Doğru karar! Ödül aldın! 🏆"
+    ],
+    "negative": [
+      "Risk tutmadı! Yavaşladın! 🐌",
+      "Güvende kaldın ama küçüldün! 📉",
+      "Temkinli seçim! Az büyüdün! 🌿",
+      "Dikkatli ol! Kısaldın! ✂️",
+      "Beklemek bazen iyi! Ama yavaşladın! ⏳",
+      "Güvenli seçim ama tempo düştü! 🎯",
+      "Korumacı! Büyüme yavaşladı! 🐢",
+      "Riskten kaçındın! Kısaldın! 📊",
+      "Sabırlı seçim! Ama puan az! 💤",
+      "Umursamadın! Etki minimal! 🤷"
+    ],
+    "neutral": [
+      "Nötr seçim! Etki az! 😐",
+      "Bakiyoruz! Küçük değişim! 🔄",
+      "Umursamaz seçim! Hafif etki! 🌫️",
+      "Dengedesin! Devam et! ⚖️",
+      "Rastgele! Şans faktörü! 🎲"
+    ],
+    "death": [
+      "💥 Duvara çarptın!",
+      "☠️ Kendi kuyruğuna çarptın!",
+      "💀 Başka yılana çarptın!",
+      "🪦 Öldün! 2 saniye sonra respawn..."
+    ],
+    "respawn": [
+      "🔄 Yeniden doğdun!",
+      "✨ Geri döndün!",
+      "🐍 Yeni başlangıç!",
+      "💚 Tekrar oyunda!"
+    ],
+    "buff_activated": [
+      "👻 Hayalet Mod! 3 saniye!",
+      "⚡ Hız Patlaması! 3 saniye!",
+      "🛡️ Koruma aktif!"
+    ],
+    "buff_expired": [
+      "Hayalet Mod bitti!",
+      "Hız patlaması sona erdi!",
+      "Koruma kalktı!"
+    ]
+  },
+  "decision_tooltips": {
+    "length_increase": "Yılanın uzar 🐍",
+    "length_decrease": "Yılanın kısalır ✂️",
+    "speed_increase": "Hızlanırsın ⚡",
+    "speed_decrease": "Yavaşlarsın 🐌",
+    "score_bonus": "Puan kazanırsın 💯",
+    "score_penalty": "Puan kaybedersin 📉",
+    "buff": "Özel yetenek! ✨",
+    "neutral": "Nötr etki 😐"
+  },
+  "connection_messages": {
+    "connecting": "Bağlanıyor...",
+    "connected": "✅ Bağlandı!",
+    "disconnected": "❌ Bağlantı kesildi!",
+    "reconnecting": "🔄 Yeniden bağlanıyor...",
+    "failed": "❌ Bağlantı başarısız! Tekrar dene."
+  },
+  "error_messages": {
+    "room_full": "Bu oda dolu! Başka bir oda deneniyor...",
+    "nickname_taken": "Bu nickname kullanımda! Sonuna #{number} eklendi.",
+    "server_error": "Sunucu hatası! Lütfen tekrar dene.",
+    "invalid_input": "Geçersiz giriş! Lütfen kontrol et.",
+    "timeout": "Zaman aşımı! Lütfen tekrar dene."
+  }
+}

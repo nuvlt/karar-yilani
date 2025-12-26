@@ -1,0 +1,826 @@
+{
+  "decisions": [
+    {
+      "id": "d001",
+      "scenario": "Toplantıya 5 dakika geç kalacaksın!",
+      "theme": "risk",
+      "options": [
+        {
+          "label": "Koşarak git",
+          "effect": {
+            "lengthChange": -3,
+            "speedMultiplier": 1.4,
+            "scoreBonus": 50,
+            "duration": 5000
+          }
+        },
+        {
+          "label": "Yavaş ama sakin git",
+          "effect": {
+            "lengthChange": 2,
+            "speedMultiplier": 0.8,
+            "scoreBonus": 30,
+            "duration": 5000
+          }
+        },
+        {
+          "label": "Online'a bağlan",
+          "effect": {
+            "lengthChange": 0,
+            "speedMultiplier": 1.0,
+            "scoreBonus": 80,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d002",
+      "scenario": "Kahve molası zamanı!",
+      "theme": "safe",
+      "options": [
+        {
+          "label": "Kahve iç, enerji topla",
+          "effect": {
+            "lengthChange": 5,
+            "speedMultiplier": 1.2,
+            "scoreBonus": 60,
+            "duration": 4000
+          }
+        },
+        {
+          "label": "Çay iç, sakinleş",
+          "effect": {
+            "lengthChange": 8,
+            "speedMultiplier": 0.9,
+            "scoreBonus": 70,
+            "duration": 4000
+          }
+        }
+      ]
+    },
+    {
+      "id": "d003",
+      "scenario": "Patronun acil bir iş verdi!",
+      "theme": "risk",
+      "options": [
+        {
+          "label": "Hemen başla, hızlı bitir",
+          "effect": {
+            "lengthChange": -5,
+            "speedMultiplier": 1.5,
+            "scoreBonus": 150,
+            "duration": 6000
+          }
+        },
+        {
+          "label": "Planla, sonra başla",
+          "effect": {
+            "lengthChange": 10,
+            "speedMultiplier": 0.7,
+            "scoreBonus": 100,
+            "duration": 6000
+          }
+        },
+        {
+          "label": "Bir başkasına delege et",
+          "effect": {
+            "lengthChange": 3,
+            "speedMultiplier": 1.0,
+            "scoreBonus": 50,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d004",
+      "scenario": "E-posta kutun 99+ bildirimde!",
+      "theme": "neutral",
+      "options": [
+        {
+          "label": "Hepsini hızlıca tara",
+          "effect": {
+            "lengthChange": 0,
+            "speedMultiplier": 1.3,
+            "scoreBonus": 40,
+            "duration": 3000
+          }
+        },
+        {
+          "label": "Sadece önemlileri oku",
+          "effect": {
+            "lengthChange": 4,
+            "speedMultiplier": 1.0,
+            "scoreBonus": 80,
+            "duration": 0
+          }
+        },
+        {
+          "label": "Hepsini okundu işaretle",
+          "effect": {
+            "lengthChange": -2,
+            "speedMultiplier": 1.1,
+            "scoreBonus": 20,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d005",
+      "scenario": "Öğle yemeği vakti!",
+      "theme": "safe",
+      "options": [
+        {
+          "label": "Fast food, hızlı dön",
+          "effect": {
+            "lengthChange": 2,
+            "speedMultiplier": 1.3,
+            "scoreBonus": 50,
+            "duration": 4000
+          }
+        },
+        {
+          "label": "Restoran, keyifli öğle",
+          "effect": {
+            "lengthChange": 12,
+            "speedMultiplier": 0.8,
+            "scoreBonus": 90,
+            "duration": 5000
+          }
+        }
+      ]
+    },
+    {
+      "id": "d006",
+      "scenario": "Arkadaşın doğum günü sürprizi planlıyor!",
+      "theme": "neutral",
+      "options": [
+        {
+          "label": "Katıl, eğlen",
+          "effect": {
+            "lengthChange": 8,
+            "speedMultiplier": 1.0,
+            "scoreBonus": 100,
+            "duration": 0
+          }
+        },
+        {
+          "label": "Hediye gönder, çalış",
+          "effect": {
+            "lengthChange": 3,
+            "speedMultiplier": 1.1,
+            "scoreBonus": 60,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d007",
+      "scenario": "Spor salonu üyeliği sona eriyor!",
+      "theme": "safe",
+      "options": [
+        {
+          "label": "Yenile, formda kal",
+          "effect": {
+            "lengthChange": 6,
+            "speedMultiplier": 1.2,
+            "scoreBonus": 80,
+            "duration": 5000
+          }
+        },
+        {
+          "label": "Evde spor yap",
+          "effect": {
+            "lengthChange": 4,
+            "speedMultiplier": 1.0,
+            "scoreBonus": 60,
+            "duration": 0
+          }
+        },
+        {
+          "label": "Sporu bırak",
+          "effect": {
+            "lengthChange": -4,
+            "speedMultiplier": 0.9,
+            "scoreBonus": 20,
+            "duration": 4000
+          }
+        }
+      ]
+    },
+    {
+      "id": "d008",
+      "scenario": "Yeni bir proje teklifi geldi!",
+      "theme": "risk",
+      "options": [
+        {
+          "label": "Kabul et, büyü",
+          "effect": {
+            "lengthChange": 15,
+            "speedMultiplier": 0.7,
+            "scoreBonus": 200,
+            "duration": 8000
+          }
+        },
+        {
+          "label": "Reddet, odaklan",
+          "effect": {
+            "lengthChange": -5,
+            "speedMultiplier": 1.4,
+            "scoreBonus": 80,
+            "duration": 5000
+          }
+        }
+      ]
+    },
+    {
+      "id": "d009",
+      "scenario": "Laptopun dondu, kaydetmedin!",
+      "theme": "risk",
+      "options": [
+        {
+          "label": "Zorla kapat",
+          "effect": {
+            "lengthChange": -8,
+            "speedMultiplier": 1.5,
+            "scoreBonus": 30,
+            "duration": 3000
+          }
+        },
+        {
+          "label": "Bekle, düzelsin",
+          "effect": {
+            "lengthChange": 5,
+            "speedMultiplier": 0.6,
+            "scoreBonus": 100,
+            "duration": 8000
+          }
+        }
+      ]
+    },
+    {
+      "id": "d010",
+      "scenario": "Hafta sonu tatil planı yap!",
+      "theme": "neutral",
+      "options": [
+        {
+          "label": "Şehir dışına kaç",
+          "effect": {
+            "lengthChange": 10,
+            "speedMultiplier": 0.9,
+            "scoreBonus": 120,
+            "duration": 0
+          }
+        },
+        {
+          "label": "Evde dinlen",
+          "effect": {
+            "lengthChange": 7,
+            "speedMultiplier": 1.0,
+            "scoreBonus": 70,
+            "duration": 0
+          }
+        },
+        {
+          "label": "Ekstra mesai yap",
+          "effect": {
+            "lengthChange": -3,
+            "speedMultiplier": 1.3,
+            "scoreBonus": 150,
+            "duration": 5000
+          }
+        }
+      ]
+    },
+    {
+      "id": "d011",
+      "scenario": "Telefonun %5 şarjda!",
+      "theme": "risk",
+      "options": [
+        {
+          "label": "Şarja tak, bekle",
+          "effect": {
+            "lengthChange": 8,
+            "speedMultiplier": 0.5,
+            "scoreBonus": 90,
+            "duration": 6000
+          }
+        },
+        {
+          "label": "Powerbank kullan",
+          "effect": {
+            "lengthChange": 2,
+            "speedMultiplier": 1.2,
+            "scoreBonus": 60,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d012",
+      "scenario": "Favori dizinin yeni sezonu çıktı!",
+      "theme": "neutral",
+      "options": [
+        {
+          "label": "Hemen başla, maraton yap",
+          "effect": {
+            "lengthChange": 12,
+            "speedMultiplier": 0.7,
+            "scoreBonus": 110,
+            "duration": 10000
+          }
+        },
+        {
+          "label": "Akşam izle",
+          "effect": {
+            "lengthChange": 5,
+            "speedMultiplier": 1.1,
+            "scoreBonus": 70,
+            "duration": 0
+          }
+        },
+        {
+          "label": "Spoiler oku geç",
+          "effect": {
+            "lengthChange": -2,
+            "speedMultiplier": 1.4,
+            "scoreBonus": 30,
+            "duration": 3000
+          }
+        }
+      ]
+    },
+    {
+      "id": "d013",
+      "scenario": "Trafik sıkışık, alternatif yol var!",
+      "theme": "risk",
+      "options": [
+        {
+          "label": "Ara yoldan git",
+          "effect": {
+            "lengthChange": -4,
+            "speedMultiplier": 1.6,
+            "scoreBonus": 100,
+            "duration": 5000
+          }
+        },
+        {
+          "label": "Ana yolda bekle",
+          "effect": {
+            "lengthChange": 6,
+            "speedMultiplier": 0.8,
+            "scoreBonus": 50,
+            "duration": 6000
+          }
+        }
+      ]
+    },
+    {
+      "id": "d014",
+      "scenario": "Yeni bir hobiye başlamak ister misin?",
+      "theme": "safe",
+      "options": [
+        {
+          "label": "Evet, başla",
+          "effect": {
+            "lengthChange": 10,
+            "speedMultiplier": 1.0,
+            "scoreBonus": 130,
+            "duration": 0
+          }
+        },
+        {
+          "label": "Düşüneyim",
+          "effect": {
+            "lengthChange": 3,
+            "speedMultiplier": 1.0,
+            "scoreBonus": 40,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d015",
+      "scenario": "Pazarlıkta indirim istiyorsun!",
+      "theme": "risk",
+      "options": [
+        {
+          "label": "İsrarla pazarlık yap",
+          "effect": {
+            "lengthChange": 4,
+            "speedMultiplier": 0.9,
+            "scoreBonus": 120,
+            "duration": 5000
+          }
+        },
+        {
+          "label": "Normal fiyata al",
+          "effect": {
+            "lengthChange": -2,
+            "speedMultiplier": 1.3,
+            "scoreBonus": 40,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d016",
+      "scenario": "Yağmur yağıyor, şemsiye yok!",
+      "theme": "neutral",
+      "options": [
+        {
+          "label": "Koşarak git",
+          "effect": {
+            "lengthChange": -3,
+            "speedMultiplier": 1.5,
+            "scoreBonus": 50,
+            "duration": 4000
+          }
+        },
+        {
+          "label": "Yağmur dinsin bekle",
+          "effect": {
+            "lengthChange": 7,
+            "speedMultiplier": 0.6,
+            "scoreBonus": 70,
+            "duration": 8000
+          }
+        },
+        {
+          "label": "Şemsiye satın al",
+          "effect": {
+            "lengthChange": 2,
+            "speedMultiplier": 1.0,
+            "scoreBonus": 90,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d017",
+      "scenario": "Sosyal medyada trend bir akım var!",
+      "theme": "neutral",
+      "options": [
+        {
+          "label": "Katıl, paylaş",
+          "effect": {
+            "lengthChange": 6,
+            "speedMultiplier": 1.2,
+            "scoreBonus": 80,
+            "duration": 0
+          }
+        },
+        {
+          "label": "İzle, katılma",
+          "effect": {
+            "lengthChange": 2,
+            "speedMultiplier": 1.0,
+            "scoreBonus": 40,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d018",
+      "scenario": "Yeni bir dil öğrenmeye başla!",
+      "theme": "safe",
+      "options": [
+        {
+          "label": "Her gün pratik yap",
+          "effect": {
+            "lengthChange": 12,
+            "speedMultiplier": 0.8,
+            "scoreBonus": 150,
+            "duration": 10000
+          }
+        },
+        {
+          "label": "Haftada 2 gün",
+          "effect": {
+            "lengthChange": 6,
+            "speedMultiplier": 1.0,
+            "scoreBonus": 80,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d019",
+      "scenario": "Bilgisayarın güncelleme istiyor!",
+      "theme": "risk",
+      "options": [
+        {
+          "label": "Şimdi güncelle",
+          "effect": {
+            "lengthChange": 5,
+            "speedMultiplier": 0.5,
+            "scoreBonus": 100,
+            "duration": 12000
+          }
+        },
+        {
+          "label": "Bu gece yap",
+          "effect": {
+            "lengthChange": 2,
+            "speedMultiplier": 1.1,
+            "scoreBonus": 60,
+            "duration": 0
+          }
+        },
+        {
+          "label": "Ertelee",
+          "effect": {
+            "lengthChange": -3,
+            "speedMultiplier": 1.4,
+            "scoreBonus": 30,
+            "duration": 4000
+          }
+        }
+      ]
+    },
+    {
+      "id": "d020",
+      "scenario": "Eski bir arkadaştan mesaj geldi!",
+      "theme": "neutral",
+      "options": [
+        {
+          "label": "Hemen cevap ver",
+          "effect": {
+            "lengthChange": 8,
+            "speedMultiplier": 1.0,
+            "scoreBonus": 90,
+            "duration": 0
+          }
+        },
+        {
+          "label": "Sonra bak",
+          "effect": {
+            "lengthChange": 0,
+            "speedMultiplier": 1.2,
+            "scoreBonus": 40,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d021",
+      "scenario": "Favori yemeğin sınırlı süreliğine indirimde!",
+      "theme": "safe",
+      "options": [
+        {
+          "label": "Sipariş ver",
+          "effect": {
+            "lengthChange": 10,
+            "speedMultiplier": 1.1,
+            "scoreBonus": 110,
+            "duration": 0
+          }
+        },
+        {
+          "label": "Başka zaman",
+          "effect": {
+            "lengthChange": 2,
+            "speedMultiplier": 1.0,
+            "scoreBonus": 30,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d022",
+      "scenario": "Masaüstün dağınık!",
+      "theme": "neutral",
+      "options": [
+        {
+          "label": "Hemen düzenle",
+          "effect": {
+            "lengthChange": 4,
+            "speedMultiplier": 0.9,
+            "scoreBonus": 70,
+            "duration": 5000
+          }
+        },
+        {
+          "label": "Sonra hallederim",
+          "effect": {
+            "lengthChange": -1,
+            "speedMultiplier": 1.2,
+            "scoreBonus": 20,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d023",
+      "scenario": "Yeni bir kitap okumaya başla!",
+      "theme": "safe",
+      "options": [
+        {
+          "label": "Her gece oku",
+          "effect": {
+            "lengthChange": 9,
+            "speedMultiplier": 0.9,
+            "scoreBonus": 120,
+            "duration": 8000
+          }
+        },
+        {
+          "label": "Hafta sonları",
+          "effect": {
+            "lengthChange": 5,
+            "speedMultiplier": 1.0,
+            "scoreBonus": 70,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d024",
+      "scenario": "İnternet yavaş, modem resetle!",
+      "theme": "risk",
+      "options": [
+        {
+          "label": "Resetle",
+          "effect": {
+            "lengthChange": -2,
+            "speedMultiplier": 0.4,
+            "scoreBonus": 80,
+            "duration": 10000
+          }
+        },
+        {
+          "label": "Bekle düzelsin",
+          "effect": {
+            "lengthChange": 3,
+            "speedMultiplier": 0.8,
+            "scoreBonus": 40,
+            "duration": 6000
+          }
+        }
+      ]
+    },
+    {
+      "id": "d025",
+      "scenario": "Arkadaşların piknik planlıyor!",
+      "theme": "neutral",
+      "options": [
+        {
+          "label": "Katıl, eğlen",
+          "effect": {
+            "lengthChange": 11,
+            "speedMultiplier": 0.9,
+            "scoreBonus": 130,
+            "duration": 0
+          }
+        },
+        {
+          "label": "Evde kal",
+          "effect": {
+            "lengthChange": 4,
+            "speedMultiplier": 1.1,
+            "scoreBonus": 50,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d026",
+      "scenario": "Yeni bir uygulama keşfettin!",
+      "theme": "safe",
+      "options": [
+        {
+          "label": "İndir, dene",
+          "effect": {
+            "lengthChange": 7,
+            "speedMultiplier": 1.0,
+            "scoreBonus": 90,
+            "duration": 0
+          }
+        },
+        {
+          "label": "Araştır önce",
+          "effect": {
+            "lengthChange": 3,
+            "speedMultiplier": 1.0,
+            "scoreBonus": 50,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d027",
+      "scenario": "Sabah alarmın çaldı!",
+      "theme": "risk",
+      "options": [
+        {
+          "label": "Hemen kalk",
+          "effect": {
+            "lengthChange": -5,
+            "speedMultiplier": 1.5,
+            "scoreBonus": 100,
+            "duration": 4000
+          }
+        },
+        {
+          "label": "5 dakika daha",
+          "effect": {
+            "lengthChange": 8,
+            "speedMultiplier": 0.7,
+            "scoreBonus": 60,
+            "duration": 8000
+          }
+        }
+      ]
+    },
+    {
+      "id": "d028",
+      "scenario": "Dosyalarını yedeklemelisin!",
+      "theme": "safe",
+      "options": [
+        {
+          "label": "Şimdi yedekle",
+          "effect": {
+            "lengthChange": 6,
+            "speedMultiplier": 0.8,
+            "scoreBonus": 100,
+            "duration": 6000
+          }
+        },
+        {
+          "label": "Sonra yaparım",
+          "effect": {
+            "lengthChange": -2,
+            "speedMultiplier": 1.3,
+            "scoreBonus": 30,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d029",
+      "scenario": "Yeni bir şehre taşınma teklifi aldın!",
+      "theme": "risk",
+      "options": [
+        {
+          "label": "Kabul et, macera",
+          "effect": {
+            "lengthChange": 15,
+            "speedMultiplier": 0.8,
+            "scoreBonus": 200,
+            "duration": 0
+          }
+        },
+        {
+          "label": "Reddet, kalsın",
+          "effect": {
+            "lengthChange": 5,
+            "speedMultiplier": 1.2,
+            "scoreBonus": 70,
+            "duration": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "d030",
+      "scenario": "Online kurs fırsatı var!",
+      "theme": "safe",
+      "options": [
+        {
+          "label": "Kayıt ol, öğren",
+          "effect": {
+            "lengthChange": 10,
+            "speedMultiplier": 0.9,
+            "scoreBonus": 140,
+            "duration": 8000
+          }
+        },
+        {
+          "label": "Sonra düşün",
+          "effect": {
+            "lengthChange": 2,
+            "speedMultiplier": 1.1,
+            "scoreBonus": 40,
+            "duration": 0
+          }
+        }
+      ]
+    }
+  ]
+}
