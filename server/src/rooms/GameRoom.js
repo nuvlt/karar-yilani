@@ -2,7 +2,8 @@ import { randomBytes } from 'crypto';
 import { GameState } from '../game/GameState.js';
 
 export class GameRoom {
-  constructor() {
+  constructor(io) {
+    this.io = io; // Socket.io instance
     this.id = this.generateRoomId();
     this.maxPlayers = 16;
     this.players = new Map(); // socketId -> PlayerData
@@ -14,6 +15,8 @@ export class GameRoom {
     this.tickRate = 60; // FPS
     this.autoStartTimeout = null; // Auto-start timer
     this.creatorId = null; // İlk oyuncu (oda kurucusu)
+    this.countdownStartTime = null; // Geri sayım başlangıç zamanı
+    this.countdownDuration = 30000; // 30 saniye
   }
 
   generateRoomId() {
@@ -29,7 +32,6 @@ export class GameRoom {
       socketId,
       nickname: playerData.nickname,
       joinedAt: Date.now()
-      // Socket referansını KALDIRDIK - circular reference oluşturuyordu
     });
 
     // İlk oyuncu oda kurucusu olur
@@ -39,16 +41,38 @@ export class GameRoom {
 
     console.log(`Player ${playerData.nickname} joined room ${this.id}`);
 
-    // Oda doluysa veya belli bir süre geçtiyse oyunu başlat
-    if (this.players.size >= 2 && !this.started && !this.autoStartTimeout) {
-      this.autoStartTimeout = setTimeout(() => {
-        if (!this.started) {
-          this.start();
-        }
-      }, 30000); // 30 saniye bekleme (manuel başlatma için süre)
+    // İlk kez 2 oyuncu olduğunda countdown başlat
+    if (this.players.size === 2 && !this.started && !this.autoStartTimeout) {
+      this.startCountdown();
     }
 
     return true;
+  }
+
+  startCountdown() {
+    console.log(`Starting countdown in room ${this.id}`);
+    this.countdownStartTime = Date.now();
+    
+    // Tüm oyunculara countdown başladı mesajı gönder
+    this.io.to(this.id).emit('countdown-started', {
+      startTime: this.countdownStartTime,
+      duration: this.countdownDuration
+    });
+    
+    this.autoStartTimeout = setTimeout(() => {
+      if (!this.started) {
+        console.log(`Auto-starting game in room ${this.id}`);
+        this.start(this.io);
+      }
+    }, this.countdownDuration);
+  }
+
+  getRemainingCountdown() {
+    if (!this.countdownStartTime) return 30;
+    
+    const elapsed = Date.now() - this.countdownStartTime;
+    const remaining = Math.max(0, Math.ceil((this.countdownDuration - elapsed) / 1000));
+    return remaining;
   }
 
   removePlayer(socketId) {
@@ -168,7 +192,22 @@ export class GameRoom {
   }
 
   getPlayers() {
-    return Array.from(this.players.values());
+    return Array.from(this.players.values()).map(p => ({
+      socketId: p.socketId,
+      nickname: p.nickname
+    }));
+  }
+
+  getRoomData() {
+    return {
+      roomId: this.id,
+      players: this.getPlayers(),
+      isStarted: this.started,
+      playerCount: this.players.size,
+      maxPlayers: this.maxPlayers,
+      remainingCountdown: this.getRemainingCountdown(),
+      countdownActive: this.countdownStartTime !== null
+    };
   }
 
   getRemainingTime() {

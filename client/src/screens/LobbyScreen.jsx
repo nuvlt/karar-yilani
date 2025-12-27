@@ -3,11 +3,27 @@ import socket from '../utils/socket'
 
 function LobbyScreen({ playerData, roomData }) {
   const [players, setPlayers] = useState(roomData?.players || [])
-  const [countdown, setCountdown] = useState(30) // 30 saniye
+  const [countdown, setCountdown] = useState(roomData?.remainingCountdown || 30)
   const [isCreator, setIsCreator] = useState(roomData?.isCreator || false)
 
   useEffect(() => {
     setIsCreator(roomData?.isCreator || false);
+    
+    // Server'dan countdown başladı event'i geldiğinde
+    socket.on('countdown-started', (data) => {
+      console.log('Countdown started:', data);
+      // Server'dan gelen başlangıç zamanını kullan
+      const updateCountdown = () => {
+        const elapsed = Date.now() - data.startTime;
+        const remaining = Math.max(0, Math.ceil((data.duration - elapsed) / 1000));
+        setCountdown(remaining);
+        
+        if (remaining > 0) {
+          requestAnimationFrame(updateCountdown);
+        }
+      };
+      updateCountdown();
+    });
     
     // Socket event listeners
     socket.on('player-joined', (data) => {
@@ -20,21 +36,10 @@ function LobbyScreen({ playerData, roomData }) {
       setPlayers(prev => prev.filter(p => p.socketId !== data.socketId));
     });
 
-    // Countdown
-    const countdownInterval = setInterval(() => {
-      setCountdown(prev => {
-        if (prev <= 1) {
-          clearInterval(countdownInterval)
-          return 0
-        }
-        return prev - 1
-      })
-    }, 1000)
-
     return () => {
+      socket.off('countdown-started');
       socket.off('player-joined');
       socket.off('player-left');
-      clearInterval(countdownInterval)
     }
   }, [roomData])
 

@@ -1,7 +1,8 @@
 import { GameRoom } from './GameRoom.js';
 
 export class RoomManager {
-  constructor() {
+  constructor(io) {
+    this.io = io;
     this.rooms = new Map();
   }
 
@@ -16,8 +17,8 @@ export class RoomManager {
       }
     }
 
-    // Yeni oda oluştur
-    const newRoom = new GameRoom();
+    // Yeni oda oluştur (io parametresi ile)
+    const newRoom = new GameRoom(this.io);
     this.rooms.set(newRoom.id, newRoom);
     
     console.log(`Created new room: ${newRoom.id}`);

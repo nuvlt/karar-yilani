@@ -35,8 +35,8 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Room Manager (singleton)
-const roomManager = new RoomManager();
+// Room Manager (singleton) - io ile initialize et
+const roomManager = new RoomManager(io);
 
 // Health check endpoint
 app.get('/health', (req, res) => {

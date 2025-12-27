@@ -35,8 +35,13 @@ export function setupSocketHandlers(socket, io, roomManager) {
       roomId: currentRoom.id,
       players: currentRoom.getPlayers(),
       isStarted: currentRoom.isStarted(),
-      isCreator: currentRoom.creatorId === socket.id // Oda kurucusu mu?
+      isCreator: currentRoom.creatorId === socket.id, // Oda kurucusu mu?
+      remainingCountdown: currentRoom.getRemainingCountdown(),
+      countdownActive: currentRoom.countdownStartTime !== null
     });
+
+    // Socket'i odaya ekle (Socket.io room)
+    socket.join(currentRoom.id);
 
     // Odadaki diğer oyunculara bildir
     socket.to(currentRoom.id).emit('player-joined', {
