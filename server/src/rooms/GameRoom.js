@@ -28,8 +28,8 @@ export class GameRoom {
     this.players.set(socketId, {
       socketId,
       nickname: playerData.nickname,
-      socket: playerData.socket,
       joinedAt: Date.now()
+      // Socket referansını KALDIRDIK - circular reference oluşturuyordu
     });
 
     // İlk oyuncu oda kurucusu olur
@@ -64,7 +64,7 @@ export class GameRoom {
     }
   }
 
-  start() {
+  start(io) {
     if (this.started) return;
 
     console.log(`Starting game in room ${this.id} with ${this.players.size} players`);
@@ -79,12 +79,14 @@ export class GameRoom {
     this.startTime = Date.now();
     this.gameState = new GameState(this.players);
 
-    // Tüm oyunculara oyun başladı mesajı gönder
-    this.broadcast('game-started', {
-      roomId: this.id,
-      players: this.getPlayers(),
-      startTime: this.startTime
-    });
+    // Tüm oyunculara oyun başladı mesajı gönder (io kullanarak)
+    if (io) {
+      io.to(this.id).emit('game-started', {
+        roomId: this.id,
+        players: this.getPlayers(),
+        startTime: this.startTime
+      });
+    }
 
     // Game tick loop
     this.tickInterval = setInterval(() => {
@@ -97,7 +99,7 @@ export class GameRoom {
     }, this.gameDuration);
   }
 
-  manualStart(requesterId) {
+  manualStart(requesterId, io) {
     // Sadece oda kurucusu manuel başlatabilir
     if (requesterId !== this.creatorId) {
       return { success: false, message: 'Sadece oda kurucusu oyunu başlatabilir!' };
@@ -111,17 +113,14 @@ export class GameRoom {
       return { success: false, message: 'En az 2 oyuncu gerekli!' };
     }
 
-    this.start();
+    this.start(io);
     return { success: true };
   }
 
   broadcast(event, data) {
-    // Socket.io broadcast helper
-    this.players.forEach(player => {
-      if (player.socket) {
-        player.socket.emit(event, data);
-      }
-    });
+    // Socket.io'nun built-in broadcast kullan
+    // io.to(roomId).emit() şeklinde kullanılacak
+    // Bu metod artık kullanılmayacak, doğrudan emit edeceğiz
   }
 
   tick() {

@@ -16,10 +16,10 @@ export function setupSocketHandlers(socket, io, roomManager) {
     // Uygun oda bul veya oluştur
     currentRoom = roomManager.findOrCreateRoom();
     
-    // Oyuncuyu odaya ekle (socket referansı ile)
+    // Oyuncuyu odaya ekle (socket referansı KALDIRILDI)
     const added = currentRoom.addPlayer(socket.id, { 
-      nickname,
-      socket  // Socket referansını da ekle
+      nickname
+      // socket referansını kaldırdık - circular reference oluşturuyordu
     });
     
     if (!added) {
@@ -51,7 +51,7 @@ export function setupSocketHandlers(socket, io, roomManager) {
   socket.on('manual-start', () => {
     if (!currentRoom) return;
 
-    const result = currentRoom.manualStart(socket.id);
+    const result = currentRoom.manualStart(socket.id, io);
     
     if (!result.success) {
       socket.emit('error', { message: result.message });
