@@ -42,13 +42,6 @@ function GameCanvas({ playerData, gameState, mySocketId }) {
         })
       }
 
-      // Karar noktalarını çiz
-      if (gameState?.decisionNodes) {
-        gameState.decisionNodes.forEach(node => {
-          drawDecisionNode(ctx, node)
-        })
-      }
-
       ctx.restore()
 
       gameLoopRef.current = requestAnimationFrame(gameLoop)
@@ -160,18 +153,6 @@ function GameCanvas({ playerData, gameState, mySocketId }) {
       ctx.font = 'bold 12px Arial'
       ctx.fillText(`${snake.length}`, head.x, head.y - 40)
     }
-  }
-
-  const drawDecisionNode = (ctx, node) => {
-    ctx.fillStyle = '#ffd700'
-    ctx.beginPath()
-    ctx.arc(node.x, node.y, 20, 0, Math.PI * 2)
-    ctx.fill()
-    
-    ctx.fillStyle = '#000'
-    ctx.font = 'bold 24px Arial'
-    ctx.textAlign = 'center'
-    ctx.fillText('?', node.x, node.y + 8)
   }
 
   const getSnakeColor = (socketId) => {

@@ -17,6 +17,7 @@ export class GameRoom {
     this.creatorId = null; // İlk oyuncu (oda kurucusu)
     this.countdownStartTime = null; // Geri sayım başlangıç zamanı
     this.countdownDuration = 30000; // 30 saniye
+    this.lastDecisionId = null; // Son tetiklenen karar ID'si
   }
 
   generateRoomId() {
@@ -155,9 +156,13 @@ export class GameRoom {
     const state = this.gameState.getState();
     this.io.to(this.id).emit('game-update', state);
     
-    // Karar varsa bildir
-    if (state.currentDecision) {
+    // Karar varsa bildir (SADECE İLK KEZ!)
+    if (state.currentDecision && !this.lastDecisionId) {
       this.io.to(this.id).emit('decision-triggered', state.currentDecision);
+      this.lastDecisionId = state.currentDecision.id;
+    } else if (!state.currentDecision) {
+      // Karar bittiğinde reset
+      this.lastDecisionId = null;
     }
   }
 
