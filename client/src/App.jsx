@@ -42,7 +42,7 @@ function App() {
     };
   }, []);
 
-  const handleStartGame = (nickname) => {
+  const handleStartGame = (nickname, roomId = null) => {
     setPlayerData({ nickname });
     
     // Socket'e bağlan
@@ -50,8 +50,8 @@ function App() {
       socket.connect();
     }
     
-    // Oyuna katıl
-    socket.emit('join-game', { nickname });
+    // Oyuna katıl (roomId varsa gönder)
+    socket.emit('join-game', { nickname, roomId });
   }
 
   const handleGameOver = (results) => {

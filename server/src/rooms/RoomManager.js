@@ -8,22 +8,73 @@ export class RoomManager {
 
   /**
    * Oyuncu için uygun bir oda bul veya yeni oda oluştur
+   * Mantık: En son oluşturulan dolu olmayan odaya ekle
    */
   findOrCreateRoom() {
-    // Dolu olmayan ve başlamamış oda bul
+    // Dolu olmayan ve başlamamış en son odayı bul
+    let availableRoom = null;
+    
     for (const [id, room] of this.rooms) {
       if (!room.isFull() && !room.isStarted()) {
-        return room;
+        availableRoom = room;
+        // En son oluşturulan uygun odayı kullan (break yapma, son odayı al)
       }
     }
 
-    // Yeni oda oluştur (io parametresi ile)
+    // Uygun oda varsa onu döndür
+    if (availableRoom) {
+      return availableRoom;
+    }
+
+    // Uygun oda yoksa yeni oda oluştur (io parametresi ile)
     const newRoom = new GameRoom(this.io);
     this.rooms.set(newRoom.id, newRoom);
     
     console.log(`Created new room: ${newRoom.id}`);
     
     return newRoom;
+  }
+
+  /**
+   * Oda kodu ile odaya katıl
+   */
+  joinRoomByCode(roomCode) {
+    const room = this.rooms.get(roomCode.toUpperCase());
+    
+    if (!room) {
+      return { success: false, message: 'Oda bulunamadı!' };
+    }
+
+    if (room.isFull()) {
+      return { success: false, message: 'Oda dolu!' };
+    }
+
+    if (room.isStarted()) {
+      return { success: false, message: 'Oyun zaten başlamış!' };
+    }
+
+    return { success: true, room };
+  }
+
+  /**
+   * Belirli bir odaya katıl (oda ID ile)
+   */
+  joinRoomById(roomId) {
+    const room = this.rooms.get(roomId.toUpperCase());
+    
+    if (!room) {
+      return { success: false, message: 'Oda bulunamadı!' };
+    }
+    
+    if (room.isFull()) {
+      return { success: false, message: 'Oda dolu!' };
+    }
+    
+    if (room.isStarted()) {
+      return { success: false, message: 'Oyun zaten başlamış!' };
+    }
+    
+    return { success: true, room };
   }
 
   /**

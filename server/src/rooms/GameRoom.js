@@ -62,7 +62,7 @@ export class GameRoom {
     this.autoStartTimeout = setTimeout(() => {
       if (!this.started) {
         console.log(`Auto-starting game in room ${this.id}`);
-        this.start(this.io);
+        this.start();
       }
     }, this.countdownDuration);
   }
@@ -88,7 +88,7 @@ export class GameRoom {
     }
   }
 
-  start(io) {
+  start() {
     if (this.started) return;
 
     console.log(`Starting game in room ${this.id} with ${this.players.size} players`);
@@ -103,14 +103,12 @@ export class GameRoom {
     this.startTime = Date.now();
     this.gameState = new GameState(this.players);
 
-    // Tüm oyunculara oyun başladı mesajı gönder (io kullanarak)
-    if (io) {
-      io.to(this.id).emit('game-started', {
-        roomId: this.id,
-        players: this.getPlayers(),
-        startTime: this.startTime
-      });
-    }
+    // Tüm oyunculara oyun başladı mesajı gönder
+    this.io.to(this.id).emit('game-started', {
+      roomId: this.id,
+      players: this.getPlayers(),
+      startTime: this.startTime
+    });
 
     // Game tick loop
     this.tickInterval = setInterval(() => {
@@ -123,7 +121,7 @@ export class GameRoom {
     }, this.gameDuration);
   }
 
-  manualStart(requesterId, io) {
+  manualStart(requesterId) {
     // Sadece oda kurucusu manuel başlatabilir
     if (requesterId !== this.creatorId) {
       return { success: false, message: 'Sadece oda kurucusu oyunu başlatabilir!' };
@@ -137,7 +135,7 @@ export class GameRoom {
       return { success: false, message: 'En az 2 oyuncu gerekli!' };
     }
 
-    this.start(io);
+    this.start();
     return { success: true };
   }
 

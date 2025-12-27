@@ -47,10 +47,28 @@ function LobbyScreen({ playerData, roomData }) {
     socket.emit('manual-start');
   }
 
+  const copyRoomCode = () => {
+    const code = roomData?.roomId;
+    if (code) {
+      navigator.clipboard.writeText(code);
+      alert(`Oda kodu kopyalandı: ${code}`);
+    }
+  }
+
   return (
     <div className="screen lobby-screen">
       <div className="lobby-container">
         <h2>Oda: #{roomData?.roomId || 'LOADING'}</h2>
+        <button 
+          onClick={copyRoomCode}
+          className="button button--secondary"
+          style={{ marginTop: '8px', fontSize: '14px' }}
+        >
+          📋 Oda Kodunu Kopyala
+        </button>
+        <p style={{ fontSize: '12px', color: '#888', marginTop: '8px' }}>
+          Arkadaşların bu kodu ana menüde girerek katılabilir!
+        </p>
         
         <div className="players-section">
           <h3>Oyuncular ({players.length}/16)</h3>

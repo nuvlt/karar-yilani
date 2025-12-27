@@ -4,7 +4,7 @@ export function setupSocketHandlers(socket, io, roomManager) {
 
   // Oyuna katıl
   socket.on('join-game', (data) => {
-    const { nickname } = data;
+    const { nickname, roomId } = data;
     
     if (!nickname || nickname.length < 3 || nickname.length > 15) {
       socket.emit('error', { message: 'Geçersiz nickname' });
@@ -13,14 +13,23 @@ export function setupSocketHandlers(socket, io, roomManager) {
 
     playerNickname = nickname;
     
-    // Uygun oda bul veya oluştur
-    currentRoom = roomManager.findOrCreateRoom();
+    // Oda ID verilmişse o odaya katıl, yoksa rastgele oda bul
+    if (roomId) {
+      const joinResult = roomManager.joinRoomByCode(roomId);
+      
+      if (!joinResult.success) {
+        socket.emit('error', { message: joinResult.message });
+        return;
+      }
+      
+      currentRoom = joinResult.room;
+    } else {
+      // Uygun oda bul veya oluştur
+      currentRoom = roomManager.findOrCreateRoom();
+    }
     
-    // Oyuncuyu odaya ekle (socket referansı KALDIRILDI)
-    const added = currentRoom.addPlayer(socket.id, { 
-      nickname
-      // socket referansını kaldırdık - circular reference oluşturuyordu
-    });
+    // Oyuncuyu odaya ekle
+    const added = currentRoom.addPlayer(socket.id, { nickname });
     
     if (!added) {
       socket.emit('error', { message: 'Oda dolu!' });
@@ -35,13 +44,10 @@ export function setupSocketHandlers(socket, io, roomManager) {
       roomId: currentRoom.id,
       players: currentRoom.getPlayers(),
       isStarted: currentRoom.isStarted(),
-      isCreator: currentRoom.creatorId === socket.id, // Oda kurucusu mu?
+      isCreator: currentRoom.creatorId === socket.id,
       remainingCountdown: currentRoom.getRemainingCountdown(),
       countdownActive: currentRoom.countdownStartTime !== null
     });
-
-    // Socket'i odaya ekle (Socket.io room)
-    socket.join(currentRoom.id);
 
     // Odadaki diğer oyunculara bildir
     socket.to(currentRoom.id).emit('player-joined', {
@@ -56,7 +62,7 @@ export function setupSocketHandlers(socket, io, roomManager) {
   socket.on('manual-start', () => {
     if (!currentRoom) return;
 
-    const result = currentRoom.manualStart(socket.id, io);
+    const result = currentRoom.manualStart(socket.id);
     
     if (!result.success) {
       socket.emit('error', { message: result.message });
