@@ -4,6 +4,7 @@ export class GameState {
   constructor(players) {
     this.snakes = new Map();
     this.decisionNodes = [];
+    this.currentDecision = null; // Aktif karar
     this.tick = 0;
 
     // Her oyuncu için yılan oluştur
@@ -30,10 +31,58 @@ export class GameState {
     // Karar noktalarını güncelle
     this.updateDecisionNodes(deltaTime);
 
+    // Her 30 saniyede bir karar tetikle (1800 tick @ 60fps)
+    if (this.tick % 1800 === 0 && this.tick > 0) {
+      this.triggerDecision();
+    }
+
     // Periyodik olarak yeni karar noktaları ekle
     if (this.tick % 180 === 0) { // Her 3 saniyede bir
       this.spawnDecisionNodes();
     }
+  }
+
+  triggerDecision() {
+    // Rastgele bir karar seç
+    const decisions = [
+      {
+        question: "Sabah erkenden uyanıp spor yapmak mı, daha çok uyumak mı?",
+        options: [
+          { id: 'A', text: 'Spor yap 🏃', effect: { lengthChange: 3, scoreBonus: 30 } },
+          { id: 'B', text: 'Daha çok uyu 😴', effect: { lengthChange: -1, scoreBonus: 5 } }
+        ]
+      },
+      {
+        question: "Yeni bir iş teklifi aldınız, maaş %30 daha fazla ama riskli!",
+        options: [
+          { id: 'A', text: 'Kabul et, büyü 📈', effect: { lengthChange: 5, scoreBonus: 50 } },
+          { id: 'B', text: 'Güvenli kal 🛡️', effect: { lengthChange: 1, scoreBonus: 10 } }
+        ]
+      },
+      {
+        question: "Arkadaşınız yardım istiyor ama çok meşgulsünüz!",
+        options: [
+          { id: 'A', text: 'Yardım et 🤝', effect: { lengthChange: 2, speedMultiplier: 1.2, duration: 10000, scoreBonus: 20 } },
+          { id: 'B', text: 'Reddet 🚫', effect: { lengthChange: -2, scoreBonus: 5 } }
+        ]
+      }
+    ];
+
+    const randomDecision = decisions[Math.floor(Math.random() * decisions.length)];
+    
+    this.currentDecision = {
+      id: `decision_${this.tick}`,
+      ...randomDecision,
+      triggeredAt: Date.now(),
+      expiresAt: Date.now() + 10000 // 10 saniye
+    };
+
+    console.log('Decision triggered:', this.currentDecision.question);
+
+    // 10 saniye sonra otomatik kapat
+    setTimeout(() => {
+      this.currentDecision = null;
+    }, 10000);
   }
 
   spawnDecisionNodes() {
@@ -81,7 +130,8 @@ export class GameState {
     return {
       tick: this.tick,
       snakes: snakesArray,
-      decisionNodes: this.decisionNodes
+      decisionNodes: this.decisionNodes,
+      currentDecision: this.currentDecision
     };
   }
 }

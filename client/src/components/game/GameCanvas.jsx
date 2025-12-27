@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react'
 
-function GameCanvas({ playerData }) {
+function GameCanvas({ playerData, gameState, mySocketId }) {
   const canvasRef = useRef(null)
   const gameLoopRef = useRef(null)
+  const cameraRef = useRef({ x: 0, y: 0 })
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -19,82 +20,36 @@ function GameCanvas({ playerData }) {
     resizeCanvas()
     window.addEventListener('resize', resizeCanvas)
 
-    // Basit yılan simulasyonu
-    let snakeX = canvas.width / 2
-    let snakeY = canvas.height / 2
-    let targetX = snakeX
-    let targetY = snakeY
-
-    // Mouse/touch event'leri
-    const handlePointer = (e) => {
-      const rect = canvas.getBoundingClientRect()
-      targetX = e.clientX - rect.left
-      targetY = e.clientY - rect.top
-    }
-
-    canvas.addEventListener('mousemove', handlePointer)
-    canvas.addEventListener('touchmove', (e) => {
-      e.preventDefault()
-      if (e.touches[0]) {
-        const rect = canvas.getBoundingClientRect()
-        targetX = e.touches[0].clientX - rect.left
-        targetY = e.touches[0].clientY - rect.top
-      }
-    })
-
     // Game loop
     const gameLoop = () => {
       // Clear canvas
-      ctx.fillStyle = '#1a1a2e'
+      ctx.fillStyle = '#0a0a1a'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
       // Grid çiz
-      ctx.strokeStyle = '#16213e'
-      ctx.lineWidth = 1
-      for (let x = 0; x < canvas.width; x += 50) {
-        ctx.beginPath()
-        ctx.moveTo(x, 0)
-        ctx.lineTo(x, canvas.height)
-        ctx.stroke()
-      }
-      for (let y = 0; y < canvas.height; y += 50) {
-        ctx.beginPath()
-        ctx.moveTo(0, y)
-        ctx.lineTo(canvas.width, y)
-        ctx.stroke()
-      }
+      drawGrid(ctx, canvas)
 
-      // Yılanı hedefe doğru hareket ettir
-      const dx = targetX - snakeX
-      const dy = targetY - snakeY
-      const distance = Math.sqrt(dx * dx + dy * dy)
-      
-      if (distance > 5) {
-        const speed = 3
-        snakeX += (dx / distance) * speed
-        snakeY += (dy / distance) * speed
+      // Kamerayı güncelle
+      updateCamera(canvas)
+
+      ctx.save()
+      ctx.translate(cameraRef.current.x, cameraRef.current.y)
+
+      // Yılanları çiz
+      if (gameState?.snakes) {
+        gameState.snakes.forEach(snake => {
+          drawSnake(ctx, snake, snake.socketId === mySocketId)
+        })
       }
 
-      // Yılan başı çiz (basitleştirilmiş)
-      ctx.fillStyle = '#00ff88'
-      ctx.beginPath()
-      ctx.arc(snakeX, snakeY, 15, 0, Math.PI * 2)
-      ctx.fill()
+      // Karar noktalarını çiz
+      if (gameState?.decisionNodes) {
+        gameState.decisionNodes.forEach(node => {
+          drawDecisionNode(ctx, node)
+        })
+      }
 
-      // Nickname göster
-      ctx.fillStyle = '#ffffff'
-      ctx.font = '14px Arial'
-      ctx.textAlign = 'center'
-      ctx.fillText(playerData.nickname, snakeX, snakeY - 25)
-
-      // Mock karar noktası
-      ctx.fillStyle = '#ffd700'
-      ctx.beginPath()
-      ctx.arc(canvas.width / 2 + 200, canvas.height / 2, 20, 0, Math.PI * 2)
-      ctx.fill()
-      ctx.fillStyle = '#000'
-      ctx.font = 'bold 20px Arial'
-      ctx.fillText('?', canvas.width / 2 + 200, canvas.height / 2 + 7)
+      ctx.restore()
 
       gameLoopRef.current = requestAnimationFrame(gameLoop)
     }
@@ -107,7 +62,123 @@ function GameCanvas({ playerData }) {
         cancelAnimationFrame(gameLoopRef.current)
       }
     }
-  }, [playerData])
+  }, [playerData, gameState, mySocketId])
+
+  const drawGrid = (ctx, canvas) => {
+    ctx.strokeStyle = '#16213e'
+    ctx.lineWidth = 1
+    
+    const gridSize = 50
+    const offsetX = cameraRef.current.x % gridSize
+    const offsetY = cameraRef.current.y % gridSize
+    
+    for (let x = offsetX; x < canvas.width; x += gridSize) {
+      ctx.beginPath()
+      ctx.moveTo(x, 0)
+      ctx.lineTo(x, canvas.height)
+      ctx.stroke()
+    }
+    for (let y = offsetY; y < canvas.height; y += gridSize) {
+      ctx.beginPath()
+      ctx.moveTo(0, y)
+      ctx.lineTo(canvas.width, y)
+      ctx.stroke()
+    }
+  }
+
+  const updateCamera = (canvas) => {
+    if (!gameState?.snakes || !mySocketId) return
+
+    const mySnake = gameState.snakes.find(s => s.socketId === mySocketId)
+    if (!mySnake || !mySnake.segments || mySnake.segments.length === 0) return
+
+    const head = mySnake.segments[0]
+    const targetX = canvas.width / 2 - head.x
+    const targetY = canvas.height / 2 - head.y
+
+    // Smooth camera
+    cameraRef.current.x += (targetX - cameraRef.current.x) * 0.1
+    cameraRef.current.y += (targetY - cameraRef.current.y) * 0.1
+  }
+
+  const drawSnake = (ctx, snake, isMe) => {
+    if (!snake.segments || snake.segments.length === 0) return
+
+    // Renk
+    const color = isMe ? '#00ff88' : getSnakeColor(snake.socketId)
+
+    // Segmentleri çiz
+    ctx.strokeStyle = color
+    ctx.lineWidth = 18
+    ctx.lineCap = 'round'
+    ctx.lineJoin = 'round'
+
+    ctx.beginPath()
+    snake.segments.forEach((seg, i) => {
+      if (i === 0) {
+        ctx.moveTo(seg.x, seg.y)
+      } else {
+        ctx.lineTo(seg.x, seg.y)
+      }
+    })
+    ctx.stroke()
+
+    // Baş çiz
+    const head = snake.segments[0]
+    ctx.fillStyle = color
+    ctx.beginPath()
+    ctx.arc(head.x, head.y, 12, 0, Math.PI * 2)
+    ctx.fill()
+
+    // Gözler
+    const angle = snake.direction || 0
+    ctx.fillStyle = '#0a0a1a'
+    ctx.beginPath()
+    ctx.arc(
+      head.x + Math.cos(angle + 0.3) * 6,
+      head.y + Math.sin(angle + 0.3) * 6,
+      3, 0, Math.PI * 2
+    )
+    ctx.fill()
+    ctx.beginPath()
+    ctx.arc(
+      head.x + Math.cos(angle - 0.3) * 6,
+      head.y + Math.sin(angle - 0.3) * 6,
+      3, 0, Math.PI * 2
+    )
+    ctx.fill()
+
+    // Nickname
+    ctx.fillStyle = '#ffffff'
+    ctx.font = isMe ? 'bold 14px Arial' : '12px Arial'
+    ctx.textAlign = 'center'
+    ctx.fillText(snake.nickname, head.x, head.y - 25)
+
+    // Uzunluk göstergesi
+    if (isMe) {
+      ctx.fillStyle = '#00ff88'
+      ctx.font = 'bold 12px Arial'
+      ctx.fillText(`${snake.length}`, head.x, head.y - 40)
+    }
+  }
+
+  const drawDecisionNode = (ctx, node) => {
+    ctx.fillStyle = '#ffd700'
+    ctx.beginPath()
+    ctx.arc(node.x, node.y, 20, 0, Math.PI * 2)
+    ctx.fill()
+    
+    ctx.fillStyle = '#000'
+    ctx.font = 'bold 24px Arial'
+    ctx.textAlign = 'center'
+    ctx.fillText('?', node.x, node.y + 8)
+  }
+
+  const getSnakeColor = (socketId) => {
+    const colors = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#ff6348', '#95e1d3']
+    const hash = socketId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+    return colors[hash % colors.length]
+  }
 
   return (
     <canvas 
@@ -115,7 +186,8 @@ function GameCanvas({ playerData }) {
       className="game-canvas"
       style={{ 
         display: 'block',
-        cursor: 'none'
+        cursor: 'none',
+        background: '#0a0a1a'
       }}
     />
   )

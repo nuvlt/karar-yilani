@@ -398,3 +398,73 @@
     width: 100%;
   }
 }
+
+/* Leaderboard */
+.scoreboard-leaderboard {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #333;
+}
+
+.scoreboard-leaderboard h4 {
+  font-size: 14px;
+  color: #00ff88;
+  margin: 0 0 8px 0;
+}
+
+.leaderboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.leaderboard-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.leaderboard-item.is-me {
+  background: rgba(0, 255, 136, 0.2);
+  border: 1px solid #00ff88;
+}
+
+.leaderboard-item .rank {
+  color: #ffd700;
+  font-weight: bold;
+  min-width: 24px;
+}
+
+.leaderboard-item .nickname {
+  flex: 1;
+  color: #ffffff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.leaderboard-item .player-score {
+  color: #00ff88;
+  font-weight: bold;
+}
+
+/* Decision Popup Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

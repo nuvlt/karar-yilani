@@ -151,7 +151,14 @@ export class GameRoom {
     // Update game state
     this.gameState.update(1000 / this.tickRate);
 
-    // TODO: Broadcast state to all players
+    // Broadcast güncel state'i tüm oyunculara gönder
+    const state = this.gameState.getState();
+    this.io.to(this.id).emit('game-update', state);
+    
+    // Karar varsa bildir
+    if (state.currentDecision) {
+      this.io.to(this.id).emit('decision-triggered', state.currentDecision);
+    }
   }
 
   end() {

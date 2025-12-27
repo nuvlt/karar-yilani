@@ -73,11 +73,12 @@ export function setupSocketHandlers(socket, io, roomManager) {
   socket.on('player-input', (data) => {
     if (!currentRoom || !currentRoom.gameState) return;
 
-    const { targetX, targetY } = data;
+    const { x, y } = data;
     const snake = currentRoom.gameState.getSnake(socket.id);
     
     if (snake) {
-      snake.setTarget(targetX, targetY);
+      snake.targetX = x;
+      snake.targetY = y;
     }
   });
 
